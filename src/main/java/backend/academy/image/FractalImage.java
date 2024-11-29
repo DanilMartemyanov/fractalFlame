@@ -1,4 +1,6 @@
-package backend.academy;
+package backend.academy.image;
+
+import backend.academy.Pixel;
 
 public record FractalImage(Pixel[] data, int width, int height) {
 
@@ -10,12 +12,12 @@ public record FractalImage(Pixel[] data, int width, int height) {
         return new FractalImage(pixels, width, height);
     }
 
-    public boolean containsPoint(int x, int y) {
-        return x >= 0 && x < width && y >= 0 && y < height;
+    public boolean contains(int x, int y) {
+        return x > 0 && x < width && y > 0 && y < height;
     }
 
     public Pixel getPixel(int x, int y) {
-        if (containsPoint(x, y)) {
+        if (contains(x, y)) {
             return data[y * width + x];
         } else {
             throw new IndexOutOfBoundsException("Coordinates out of bounds");
@@ -23,11 +25,12 @@ public record FractalImage(Pixel[] data, int width, int height) {
     }
 
     public void setPixel(int x, int y, Pixel pixel) {
-        if (containsPoint(x, y)) {
+        if (contains(x, y)) {
             data[y * width + x] = pixel;
         } else {
             throw new IndexOutOfBoundsException("Coordinates out of bounds");
         }
     }
+
 
 }

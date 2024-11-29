@@ -3,6 +3,8 @@ package backend.academy.transformation;
 import backend.academy.Point;
 
 public class Polar implements Transformation {
+
+
     @Override
     public Point apply(Point point) {
         double r = Math.sqrt(point.x() * point.x() + point.y() * point.y());
