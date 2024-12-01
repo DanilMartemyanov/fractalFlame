@@ -12,8 +12,8 @@ public class Main {
     public static void main(String[] args) {
         int width = 1920;
         int height = 1080;
-        int eqCount = 4;
-        int iterations = 5000;
+        int eqCount = 6;
+        int iterations = 50000;
         FractalImageConfig parameters = new FractalImageConfig(width, height, eqCount, iterations);
 
         Rect viewport = new Rect(-1.777, -1, 3.554, 2);
@@ -22,7 +22,7 @@ public class Main {
 
         FractalRender render = new FractalRender(parameters, viewport);
         long startTime = System.nanoTime();
-        render.render(10000);
+        render.render(50000);
         long endTime = System.nanoTime();
 
         System.out.println(endTime - startTime/(6*1000000000));

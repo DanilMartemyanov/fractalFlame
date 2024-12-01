@@ -7,6 +7,9 @@ import backend.academy.transformation.AffineTransformation;
 import backend.academy.transformation.AffineTransformationSet;
 import backend.academy.transformation.CoefficientGenerator;
 import backend.academy.transformation.CoefficientGeneratorImpl;
+import backend.academy.transformation.Handkerchief;
+import backend.academy.transformation.Heart;
+import backend.academy.transformation.Sinusoidal;
 import backend.academy.transformation.Transformation;
 import backend.academy.transformation.NonLinearTransformationSet;
 import lombok.Getter;
@@ -56,6 +59,7 @@ public class FractalRender {
                 // Применяем случайное нелинейное преобразование
                 Transformation nonlinearTransformation = nonLinearTransformationSet.getRandomTransformation();
 
+
                 point = nonlinearTransformation.apply(point);
 
 
@@ -68,7 +72,7 @@ public class FractalRender {
 
                     // Если точка попадает в границы изображения
                     if (fractalImage.contains(x1, y1)) {
-                        // Получаем текущий пиксель
+
                         Pixel pixel = fractalImage.getPixel(x1, y1);
 
                         int newR;
@@ -86,7 +90,7 @@ public class FractalRender {
                             newB = (pixel.b() + affineTransformation.color().getBlue()) / 2;
                         }
 
-                        // Создаем новый пиксель с обновленными значениями
+
                         Pixel newPixel = new Pixel(
                             newR,
                             newG,

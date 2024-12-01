@@ -3,7 +3,6 @@ package backend.academy.transformation;
 import backend.academy.services.Constant;
 import java.security.SecureRandom;
 
-
 public class CoefficientGeneratorImpl implements CoefficientGenerator {
     private static final SecureRandom secureRandom = new SecureRandom();
 
@@ -12,19 +11,24 @@ public class CoefficientGeneratorImpl implements CoefficientGenerator {
     }
 
     public AffineTransformation generate() {
-        while (true) {
-            double a = randomCoefficient(Constant.INTERVALFROM1_5, Constant.INTERVALTO1_5);
-            double b = randomCoefficient(Constant.INTERVALFROM1_5, Constant.INTERVALTO1_5);
-            double c = randomCoefficient(Constant.INTERVALFROM1_5, Constant.INTERVALTO1_5);
-            double d = randomCoefficient(Constant.INTERVALFROM1_5, Constant.INTERVALTO1_5);
+        double a = randomCoefficient(Constant.INTERVALFROM1_5, Constant.INTERVALTO1_5);
+        double b = randomCoefficient(Constant.INTERVALFROM1_5, Constant.INTERVALTO1_5);
+        double c = randomCoefficient(Constant.INTERVALFROM1_5, Constant.INTERVALTO1_5);
+        double d = randomCoefficient(Constant.INTERVALFROM1_5, Constant.INTERVALTO1_5);
 
-            double e = randomCoefficient(-1, 1);
-            double f = randomCoefficient(-1, 1);
+        double e = randomCoefficient(-1, 1);
+        double f = randomCoefficient(-1, 1);
 
-            if (isValidCoefficients(a, b, c, d)) {
-                return new AffineTransformation(a, b, c, d, e, f);
-            }
+        while (!isValidCoefficients(a, b, c, d)) {
+            a = randomCoefficient(Constant.INTERVALFROM1_5, Constant.INTERVALTO1_5);
+            b = randomCoefficient(Constant.INTERVALFROM1_5, Constant.INTERVALTO1_5);
+            c = randomCoefficient(Constant.INTERVALFROM1_5, Constant.INTERVALTO1_5);
+            d = randomCoefficient(Constant.INTERVALFROM1_5, Constant.INTERVALTO1_5);
+
+            e = randomCoefficient(-1, 1);
+            f = randomCoefficient(-1, 1);
         }
+            return new AffineTransformation(a, b, c, d, e, f);
     }
 
     private static boolean isValidCoefficients(double a, double b, double c, double d) {
