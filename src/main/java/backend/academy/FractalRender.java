@@ -7,9 +7,6 @@ import backend.academy.transformation.AffineTransformation;
 import backend.academy.transformation.AffineTransformationSet;
 import backend.academy.transformation.CoefficientGenerator;
 import backend.academy.transformation.CoefficientGeneratorImpl;
-import backend.academy.transformation.Handkerchief;
-import backend.academy.transformation.Heart;
-import backend.academy.transformation.Sinusoidal;
 import backend.academy.transformation.Transformation;
 import backend.academy.transformation.NonLinearTransformationSet;
 import lombok.Getter;
@@ -41,65 +38,52 @@ public class FractalRender {
 
             int i = random.nextInt(config.eqCount());
 
+            double xmin = viewport.x();
+            double xmax = viewport.x() + viewport.width();
+            double ymin = viewport.y();
+            double ymax = viewport.y() + viewport.height();
+
+            double newX = random.nextDouble(viewport.x(), viewport.width() + viewport.x());
+            double newY = random.nextDouble(viewport.y(), viewport.height() + viewport.y());
+
             for (int step = -20; step < config.iterations(); step++) {
-
-                double xmin = -1.777;
-                double xmax = 1.777;
-                double ymin = -1.0;
-                double ymax = 1.0;
-
-                double newX = random.nextDouble(xmin, xmax);
-                double newY = random.nextDouble(ymin, ymax);
 
                 // Выбираем случайное аффинное преобразование
                 AffineTransformation affineTransformation = affineTransformationSet.getRandom(i);
 
-                Point point = affineTransformation.createPoint(newX, newY);
+                Point point = affineTransformation.apply(newX, newY);
 
                 // Применяем случайное нелинейное преобразование
                 Transformation nonlinearTransformation = nonLinearTransformationSet.getRandomTransformation();
 
-
                 point = nonlinearTransformation.apply(point);
-
 
                 // Проверяем, попадает ли точка в область просмотра и начинается ли отрисовка
                 if (step >= 0 && Checker.boundCheck(point.x(), xmin, xmax)
                     && Checker.boundCheck(point.y(), ymin, ymax)) {
                     // Преобразуем координаты точки в пиксельные координаты изображения
-                    int x1 = (int) (config.xRes() - ((xmax - point.x()) / (xmax - xmin)) * config.xRes());
-                    int y1 = (int) (config.yRes() - ((ymax - point.y()) / (ymax - ymin)) * config.yRes());
+                    int x1 =
+                        (config.xRes() - (int) (((xmax - point.x()) / viewport.width()) * config.xRes()));
+                    int y1 =
+                        (config.yRes() - (int) (((ymax - point.y()) / viewport.height()) * config.yRes()));
 
                     // Если точка попадает в границы изображения
                     if (fractalImage.contains(x1, y1)) {
 
-                        Pixel pixel = fractalImage.getPixel(x1, y1);
-
-                        int newR;
-                        int newG;
-                        int newB;
+                        Pixel pixel = fractalImage.getPixel(x1,y1);
 
                         if (pixel.hitCount() == 0) {
-                            newR = affineTransformation.color().getRed();
-                            newG = affineTransformation.color().getGreen();
-                            newB = affineTransformation.color().getBlue();
+                            pixel.r(affineTransformation.color().getRed());
+                            pixel.g(affineTransformation.color().getGreen());
+                            pixel.b(affineTransformation.color().getBlue());
 
                         } else {
-                            newR = (pixel.r() + affineTransformation.color().getRed()) / 2;
-                            newG = (pixel.g() + affineTransformation.color().getGreen()) / 2;
-                            newB = (pixel.b() + affineTransformation.color().getBlue()) / 2;
+                             pixel.r((pixel.r() + affineTransformation.color().getRed()) / 2);
+                             pixel.g((pixel.g() + affineTransformation.color().getGreen()) / 2);
+                             pixel.b((pixel.b() + affineTransformation.color().getBlue()) / 2);
                         }
 
-
-                        Pixel newPixel = new Pixel(
-                            newR,
-                            newG,
-                            newB,
-                            pixel.hitCount() + 1
-                        );
-
-
-                        fractalImage.setPixel(x1, y1, newPixel);
+                        pixel.hitCount(pixel.hitCount() + 1);
                     }
                 }
             }

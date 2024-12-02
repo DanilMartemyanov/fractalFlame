@@ -25,7 +25,7 @@ public class AffineTransformation {
         );
         this.color = new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256));
     }
-    public Point createPoint(double x, double y) {
+    public Point apply(double x, double y) {
         return new Point(
             coefficients.get("a") * x + coefficients.get("b") * y + coefficients.get("e"),
             coefficients.get("c") * x + coefficients.get("d") * y + coefficients.get("f")

@@ -28,7 +28,7 @@ public class CoefficientGeneratorImpl implements CoefficientGenerator {
             e = randomCoefficient(-1, 1);
             f = randomCoefficient(-1, 1);
         }
-            return new AffineTransformation(a, b, c, d, e, f);
+        return new AffineTransformation(a, b, c, d, e, f);
     }
 
     private static boolean isValidCoefficients(double a, double b, double c, double d) {

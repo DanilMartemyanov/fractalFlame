@@ -30,7 +30,6 @@ public class FileManager {
             bufferedImage.setRGB(x, y, color.getRGB());
         }
 
-
         File outputFile = new File(filePath);
         ImageIO.write(bufferedImage, "JPEG", outputFile);
         System.out.println("Image saved as: " + filePath);
