@@ -25,7 +25,7 @@ public class FileManager {
 
 
             Pixel pixel = pixels[i];
-            Color color = new Color(pixel.r(), pixel.g(), pixel.b());
+            Color color = new Color(pixel.red(), pixel.green(), pixel.blue());
 
             bufferedImage.setRGB(x, y, color.getRGB());
         }

@@ -22,9 +22,9 @@ public class GammaCorrection implements ImageProcessor{
             for (int x = 0; x < image.width(); x++) {
                 Pixel pixel = image.getPixel(x,y);
                 pixel.normal(image.getPixel(x,y).normal() / max);
-                pixel.r((int) (pixel.r() * Math.pow(pixel.normal(), (1.0 / gamma))));
-                pixel.g((int) (pixel.g() * Math.pow(pixel.normal(), (1.0 / gamma))));
-                pixel.b((int) (pixel.b() * Math.pow(pixel.normal(), (1.0 / gamma))));
+                pixel.red((int) (pixel.red() * Math.pow(pixel.normal(), (1.0 / gamma))));
+                pixel.green((int) (pixel.green() * Math.pow(pixel.normal(), (1.0 / gamma))));
+                pixel.blue((int) (pixel.blue() * Math.pow(pixel.normal(), (1.0 / gamma))));
             }
         }
 

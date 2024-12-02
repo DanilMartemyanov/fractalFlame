@@ -1,7 +1,7 @@
 package backend.academy;
 
 import backend.academy.image.FractalImage;
-import backend.academy.image.FractalImageConfig;
+import backend.academy.image.FractalImageUtils;
 import backend.academy.services.Checker;
 import backend.academy.transformation.AffineTransformation;
 import backend.academy.transformation.AffineTransformationSet;
@@ -11,10 +11,11 @@ import backend.academy.transformation.Transformation;
 import backend.academy.transformation.NonLinearTransformationSet;
 import lombok.Getter;
 import java.security.SecureRandom;
+import java.util.List;
 
 @Getter
 public class FractalRender {
-    private FractalImageConfig config;
+    private FractalImageUtils config;
     private NonLinearTransformationSet nonLinearTransformationSet = new NonLinearTransformationSet();
     private AffineTransformationSet affineTransformationSet;
     private CoefficientGenerator coefficientGenerator = new CoefficientGeneratorImpl();
@@ -22,68 +23,61 @@ public class FractalRender {
     private FractalImage fractalImage;
     private SecureRandom random = new SecureRandom();
 
-    public FractalRender(FractalImageConfig config, Rect viewport) {
+    public FractalRender(FractalImageUtils config, Rect viewport) {
         this.config = config;
         this.viewport = viewport;
         this.fractalImage = FractalImage.init(config.xRes(), config.yRes());
     }
 
-    public void render(int n) {
+    public void render(int iterations, List<Transformation> transformations) {
         SecureRandom random = new SecureRandom();
         // Генерируем аффинные преобразования
         affineTransformationSet = new AffineTransformationSet(coefficientGenerator);
         affineTransformationSet.generateEq(config.eqCount());
 
-        for (int num = 0; num < n; num++) {
+        for (int num = 0; num < iterations; num++) {
 
-            int i = random.nextInt(config.eqCount());
+            int i = random.nextInt(transformations.size());
 
             double xmin = viewport.x();
             double xmax = viewport.x() + viewport.width();
             double ymin = viewport.y();
             double ymax = viewport.y() + viewport.height();
 
-            double newX = random.nextDouble(viewport.x(), viewport.width() + viewport.x());
-            double newY = random.nextDouble(viewport.y(), viewport.height() + viewport.y());
+            Point point  = viewport.randomPoint(random);
+
+            double newX = point.x();
+            double newY = point.y();
 
             for (int step = -20; step < config.iterations(); step++) {
 
                 // Выбираем случайное аффинное преобразование
                 AffineTransformation affineTransformation = affineTransformationSet.getRandom(i);
 
-                Point point = affineTransformation.apply(newX, newY);
+                point = affineTransformation.apply(newX, newY);
 
                 // Применяем случайное нелинейное преобразование
-                Transformation nonlinearTransformation = nonLinearTransformationSet.getRandomTransformation();
+                Transformation nonlinearTransformation = transformations.get(i);
 
                 point = nonlinearTransformation.apply(point);
 
                 // Проверяем, попадает ли точка в область просмотра и начинается ли отрисовка
-                if (step >= 0 && Checker.boundCheck(point.x(), xmin, xmax)
-                    && Checker.boundCheck(point.y(), ymin, ymax)) {
+                if (step >= 0 && Checker.boundCheck(point.x(), viewport.x(), viewport().x() + viewport.width())
+                    && Checker.boundCheck(point.y(), viewport.y(), viewport().y() + viewport.height())) {
                     // Преобразуем координаты точки в пиксельные координаты изображения
-                    int x1 =
-                        (config.xRes() - (int) (((xmax - point.x()) / viewport.width()) * config.xRes()));
-                    int y1 =
-                        (config.yRes() - (int) (((ymax - point.y()) / viewport.height()) * config.yRes()));
+
+                     point = config.convertCoordinatePixelImage(viewport, point);
+
+                    int x = (int) point.x();
+                    int y = (int) point.y();
 
                     // Если точка попадает в границы изображения
-                    if (fractalImage.contains(x1, y1)) {
+                    if (fractalImage.contains(x, y)) {
 
-                        Pixel pixel = fractalImage.getPixel(x1,y1);
-
-                        if (pixel.hitCount() == 0) {
-                            pixel.r(affineTransformation.color().getRed());
-                            pixel.g(affineTransformation.color().getGreen());
-                            pixel.b(affineTransformation.color().getBlue());
-
-                        } else {
-                             pixel.r((pixel.r() + affineTransformation.color().getRed()) / 2);
-                             pixel.g((pixel.g() + affineTransformation.color().getGreen()) / 2);
-                             pixel.b((pixel.b() + affineTransformation.color().getBlue()) / 2);
+                        Pixel pixel = fractalImage.getPixel(x, y);
+                        if (pixel != null) {
+                            pixel.paintPixelHitCount(affineTransformation.color());
                         }
-
-                        pixel.hitCount(pixel.hitCount() + 1);
                     }
                 }
             }
