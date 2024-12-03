@@ -1,16 +1,18 @@
 package backend.academy.transformation;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 public class AffineTransformationSet {
     private List<AffineTransformation> transformation;
-    private CoefficientGenerator coefficientGenerator;
+    private int count;
+    private CoefficientGenerator coefficientGenerator = new CoefficientGeneratorImpl();
 
 
-    public AffineTransformationSet(CoefficientGenerator coefficientGenerator) {
-        this.transformation = new ArrayList<>();
-        this.coefficientGenerator = coefficientGenerator;
+
+    public AffineTransformationSet(List<AffineTransformation> transformation, int count) {
+        this.transformation = transformation;
+        generateEq(count);
     }
 
 

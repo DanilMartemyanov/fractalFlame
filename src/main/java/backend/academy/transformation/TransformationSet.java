@@ -1,10 +1,13 @@
 package backend.academy.transformation;
 
+import lombok.Getter;
 import java.security.SecureRandom;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
+@Getter
 public class TransformationSet {
     private final List<Transformation> transformations;
     private Disk disk = new Disk();
@@ -31,7 +34,7 @@ public class TransformationSet {
     }
 
     public Transformation getRandomTransformation() {
-        int index = new SecureRandom().nextInt(transformations.size());
+        int index = ThreadLocalRandom.current().nextInt(transformations.size());
         return transformations.get(index);
     }
 }

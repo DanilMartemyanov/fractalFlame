@@ -1,8 +1,9 @@
 package backend.academy.transformation;
 
-import java.security.SecureRandom;
+
 
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class NonLinearTransformationSet {
     private final List<Transformation> transformations;
@@ -28,7 +29,7 @@ public class NonLinearTransformationSet {
     }
 
     public Transformation getRandomTransformation() {
-        int index = new SecureRandom().nextInt(transformations.size());
+        int index = ThreadLocalRandom.current().nextInt(transformations.size());
         return transformations.get(index);
     }
 }

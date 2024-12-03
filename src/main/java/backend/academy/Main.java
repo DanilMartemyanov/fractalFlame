@@ -4,9 +4,13 @@ import backend.academy.image.FractalImage;
 import backend.academy.image.FractalImageUtils;
 import backend.academy.image.GammaCorrection;
 
+import backend.academy.render.MultiThreadRender;
+import backend.academy.render.OneThreadRender;
 import backend.academy.services.FileManager;
 
 import backend.academy.transformation.Handkerchief;
+import backend.academy.transformation.Heart;
+import backend.academy.transformation.TransformationSet;
 import lombok.experimental.UtilityClass;
 import java.io.IOException;
 import java.util.List;
@@ -15,30 +19,29 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
-        int width = 760;
-        int height = 680;
+        int width = 1920;
+        int height = 1080;
         int eqCount = 6;
-        int iterations = 100000;
+        int iterations = 10_000_000;
         FractalImageUtils parameters = new FractalImageUtils(width, height, eqCount, iterations);
         Handkerchief handkerchief = new Handkerchief();
 
-        Rect viewport = new Rect(-1.777, -1, 3.554, 2);
-
-        FractalRender render = new FractalRender(parameters, viewport);
-        long startTime = System.nanoTime();
-        render.render(iterations, List.of(handkerchief));
-        long endTime = System.nanoTime();
-
-        System.out.println(endTime - startTime / (6 * 1000000000));
-
         GammaCorrection gammaCorrection = new GammaCorrection();
-        FractalImage image = render.fractalImage();
+        Heart heart = new Heart();
+        OneThreadRender render = new OneThreadRender(List.of(handkerchief, heart ), parameters);
+        TransformationSet transformationSet = new TransformationSet();
+        MultiThreadRender multiThreadRender = new MultiThreadRender(transformationSet.transformations(), parameters);
+        long startTime = System.currentTimeMillis();
+        FractalImage image = render.render(760, 680);
+        long endTime = System.currentTimeMillis();
 
+        System.out.println((endTime - startTime)/1000);
 
         System.out.println("Fractal rendered with " + parameters.xRes() + "x" + parameters.yRes() + " resolution.");
 
+
+        gammaCorrection.process(image);
         try {
-            gammaCorrection.process(image);
             FileManager.saveFractalImageAsJPEG(image, "test.jpg");
         } catch (IOException e) {
             throw new RuntimeException(e);

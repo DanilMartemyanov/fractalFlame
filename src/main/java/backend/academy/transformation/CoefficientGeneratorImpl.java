@@ -2,12 +2,13 @@ package backend.academy.transformation;
 
 import backend.academy.services.Constant;
 import java.security.SecureRandom;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class CoefficientGeneratorImpl implements CoefficientGenerator {
-    private static final SecureRandom secureRandom = new SecureRandom();
+
 
     public static double randomCoefficient(double min, double max) {
-        return secureRandom.nextDouble(min, max);
+        return ThreadLocalRandom.current().nextDouble(min, max);
     }
 
     public AffineTransformation generate() {
