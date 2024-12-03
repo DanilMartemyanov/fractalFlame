@@ -22,17 +22,17 @@ public class Main {
         int width = 1920;
         int height = 1080;
         int eqCount = 6;
-        int iterations = 10_000_000;
+        int iterations = 1_000_000;
         FractalImageUtils parameters = new FractalImageUtils(width, height, eqCount, iterations);
         Handkerchief handkerchief = new Handkerchief();
 
         GammaCorrection gammaCorrection = new GammaCorrection();
         Heart heart = new Heart();
-        OneThreadRender render = new OneThreadRender(List.of(handkerchief, heart ), parameters);
+        OneThreadRender render = new OneThreadRender(List.of(handkerchief), parameters);
         TransformationSet transformationSet = new TransformationSet();
         MultiThreadRender multiThreadRender = new MultiThreadRender(transformationSet.transformations(), parameters);
         long startTime = System.currentTimeMillis();
-        FractalImage image = render.render(760, 680);
+        FractalImage image = render.render(1920, 1080);
         long endTime = System.currentTimeMillis();
 
         System.out.println((endTime - startTime)/1000);

@@ -39,12 +39,10 @@ public abstract class AbstractRender {
     protected void renderImage(FractalImage fractalImage, Rect viewport) {
         System.out.println("Поток пошел");
 
-
         for (int num = 0; num < 5; num++) {
+            int i = ThreadLocalRandom.current().nextInt(transformations.size());
             AffineTransformationSet affineTransformationSet =
                 new AffineTransformationSet(new ArrayList<>(), config.eqCount());
-            int i = ThreadLocalRandom.current().nextInt(transformations.size());
-
             for (int step = -20; step < config.iterations(); step++) {
 
                 Point point = viewport.randomPoint();
