@@ -10,16 +10,19 @@ import backend.academy.services.RectUtils;
 import backend.academy.transformation.AffineTransformation;
 import backend.academy.transformation.AffineTransformationSet;
 import backend.academy.transformation.Transformation;
+import lombok.Getter;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.atomic.AtomicInteger;
 
+@Getter
 public abstract class AbstractRender {
     private List<Transformation> transformations;
     protected FractalImageUtils config;
-
-
+    private final ConcurrentHashMap<Pixel, Boolean> lockMap = new ConcurrentHashMap<>();
 
     public AbstractRender(List<Transformation> transformations, FractalImageUtils config) {
         this.transformations = transformations;
@@ -38,44 +41,41 @@ public abstract class AbstractRender {
 
     protected void renderImage(FractalImage fractalImage, Rect viewport) {
         System.out.println("Поток пошел");
+        int i = ThreadLocalRandom.current().nextInt(transformations.size());
+        AffineTransformationSet affineTransformationSet =
+            new AffineTransformationSet(new ArrayList<>(), config.eqCount());
+        for (int step = 0; step < config.iterations(); step++) {
+            Point point = viewport.randomPoint();
 
-        for (int num = 0; num < 5; num++) {
-            int i = ThreadLocalRandom.current().nextInt(transformations.size());
-            AffineTransformationSet affineTransformationSet =
-                new AffineTransformationSet(new ArrayList<>(), config.eqCount());
-            for (int step = -20; step < config.iterations(); step++) {
+            double newX = point.x();
+            double newY = point.y();
 
-                Point point = viewport.randomPoint();
+            // Выбираем случайное аффинное преобразование
+            AffineTransformation affineTransformation = affineTransformationSet.getRandom(i);
 
-                double newX = point.x();
-                double newY = point.y();
+            point = affineTransformation.apply(newX, newY);
 
-                // Выбираем случайное аффинное преобразование
-                AffineTransformation affineTransformation = affineTransformationSet.getRandom(i);
+            // Применяем случайное нелинейное преобразование
+            Transformation nonlinearTransformation = transformations.get(i);
 
-                point = affineTransformation.apply(newX, newY);
+            point = nonlinearTransformation.apply(point);
 
-                // Применяем случайное нелинейное преобразование
-                Transformation nonlinearTransformation = transformations.get(i);
+            // Проверяем, попадает ли точка в область просмотра и начинается ли отрисовка
+            if (step >= 0 && Checker.boundCheck(point.x(), viewport.x(), viewport.x() + viewport.width())
+                && Checker.boundCheck(point.y(), viewport.y(), viewport.y() + viewport.height())) {
+                // Преобразуем координаты точки в пиксельные координаты изображения
 
-                point = nonlinearTransformation.apply(point);
+                point = config.convertCoordinatePixelImage(viewport, point);
 
+                int x = (int) point.x();
+                int y = (int) point.y();
 
-                // Проверяем, попадает ли точка в область просмотра и начинается ли отрисовка
-                if (step >= 0 && Checker.boundCheck(point.x(), viewport.x(), viewport.x() + viewport.width())
-                    && Checker.boundCheck(point.y(), viewport.y(), viewport.y() + viewport.height())) {
-                    // Преобразуем координаты точки в пиксельные координаты изображения
-
-                    point = config.convertCoordinatePixelImage(viewport, point);
-
-                    int x = (int) point.x();
-                    int y = (int) point.y();
-
-                    // Если точка попадает в границы изображения
-                    paintPixel(x, y, affineTransformation.color(), fractalImage);
-                }
+                // Если точка попадает в границы изображения
+                paintPixel(x, y, affineTransformation.color(), fractalImage);
             }
+
         }
+
     }
 
     public void paintPixel(int x, int y, Color color, FractalImage fractalImage) {
@@ -86,5 +86,4 @@ public abstract class AbstractRender {
             }
         }
     }
-
 }

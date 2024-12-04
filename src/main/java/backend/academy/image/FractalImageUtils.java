@@ -1,7 +1,10 @@
 package backend.academy.image;
 
+import backend.academy.Pixel;
 import backend.academy.Point;
 import backend.academy.Rect;
+import java.util.ArrayList;
+import java.util.List;
 
 public record FractalImageUtils(int xRes, int yRes, int eqCount, int iterations) {
 
@@ -17,5 +20,7 @@ public record FractalImageUtils(int xRes, int yRes, int eqCount, int iterations)
 
         return new Point(x1, y1);
     }
+
+
 
 }

@@ -1,6 +1,8 @@
 package backend.academy.image;
 
 import backend.academy.Pixel;
+import java.util.ArrayList;
+import java.util.List;
 
 public record FractalImage(Pixel[] data, int width, int height) {
 
@@ -22,7 +24,5 @@ public record FractalImage(Pixel[] data, int width, int height) {
         }
         return null;
     }
-
-
 
 }

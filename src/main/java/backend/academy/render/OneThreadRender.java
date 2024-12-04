@@ -12,7 +12,9 @@ public class OneThreadRender extends AbstractRender {
     }
 
     public void renderAllImage(FractalImage fractalImage, Rect viewport) {
-        super.renderImage(fractalImage, viewport);
+        for (int num = 0; num < 5; num++) {
+            super.renderImage(fractalImage, viewport);
+        }
     }
 
 }

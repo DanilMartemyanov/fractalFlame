@@ -23,11 +23,7 @@ public class Pixel {
         this.normal = 0;
     }
 
-    public void setRGB(int r, int g, int b) {
-        this.red = r;
-        this.green = g;
-        this.blue = b;
-    }
+
 
     public void paintPixelHitCount(Color color) {
         if (hitCount() == 0) {
