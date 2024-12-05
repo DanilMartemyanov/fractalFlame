@@ -3,7 +3,6 @@ package backend.academy.transformation;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ThreadLocalRandom;
 import lombok.Getter;
 
 @Getter
@@ -29,8 +28,8 @@ public class TransformationSet {
 
     public List<Transformation> getTransformations(List<String> transformationNames) {
         List<Transformation> nonLinTransformations = new ArrayList<>();
-        for(String transformationName : transformationNames) {
-            if(this.transformations.containsKey(transformationName)) {
+        for (String transformationName : transformationNames) {
+            if (transformations.get(transformationName) != null) {
                 nonLinTransformations.add(transformations.get(transformationName));
             }
         }

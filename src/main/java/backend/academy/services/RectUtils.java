@@ -1,12 +1,11 @@
 package backend.academy.services;
 
-import backend.academy.Rect;
+import backend.academy.models.Rect;
 import backend.academy.image.FractalImageUtils;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class RectUtils {
-
     public static Rect create(FractalImageUtils config) {
         double aspectRatio = (double) config.xRes() / config.yRes();
         double verticalRange = 2.0;

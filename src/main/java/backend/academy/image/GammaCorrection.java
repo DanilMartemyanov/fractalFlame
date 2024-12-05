@@ -1,6 +1,6 @@
 package backend.academy.image;
 
-import backend.academy.Pixel;
+import backend.academy.models.Pixel;
 import backend.academy.services.Constant;
 
 public class GammaCorrection implements ImageProcessor {

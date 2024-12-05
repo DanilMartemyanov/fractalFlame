@@ -1,7 +1,9 @@
 package backend.academy.services;
 
-import backend.academy.Pixel;
+
+import backend.academy.models.Pixel;
 import backend.academy.image.FractalImage;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -12,8 +14,9 @@ import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @UtilityClass
-public class FileManager  {
-    public static BufferedImage getBufferedFractalImage(FractalImage fractalImage) throws IOException {
+@SuppressFBWarnings("PATH_TRAVERSAL_IN")
+public class FileManager {
+    public static BufferedImage getBufferedFractalImage(FractalImage fractalImage) {
         int width = fractalImage.width();
         int height = fractalImage.height();
 
@@ -48,7 +51,11 @@ public class FileManager  {
     }
 
     public static String getFileExtension(String filePath) {
+
         String fileName = new File(filePath).getName();
+        if ("..".equals(fileName) || "".equals(fileName)) {
+            throw new RuntimeException("Укажите корректное расширение");
+        }
 
         int indexOfLastDot = fileName.lastIndexOf('.');
 

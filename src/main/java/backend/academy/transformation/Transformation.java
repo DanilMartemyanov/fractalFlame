@@ -1,6 +1,6 @@
 package backend.academy.transformation;
 
-import backend.academy.Point;
+import backend.academy.models.Point;
 import java.util.function.Function;
 
 @FunctionalInterface

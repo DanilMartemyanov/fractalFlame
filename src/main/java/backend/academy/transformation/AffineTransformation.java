@@ -1,13 +1,15 @@
 package backend.academy.transformation;
 
-import backend.academy.Point;
+import backend.academy.models.Point;
 import backend.academy.services.Constant;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.awt.Color;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 import lombok.Getter;
 
 @Getter
+@SuppressFBWarnings("PREDICTABLE_RANDOM")
 public class AffineTransformation {
     private Map<String, Double> coefficients;
     private Color color;
@@ -22,9 +24,9 @@ public class AffineTransformation {
             "f", f
         );
         this.color = new Color(
-            ThreadLocalRandom.current().nextInt(Constant.MAXVALUECOLOR),
-            ThreadLocalRandom.current().nextInt(Constant.MAXVALUECOLOR),
-            ThreadLocalRandom.current().nextInt(Constant.MAXVALUECOLOR)
+            ThreadLocalRandom.current().nextInt(Constant.MAX_VALUE_COLOR),
+            ThreadLocalRandom.current().nextInt(Constant.MAX_VALUE_COLOR),
+            ThreadLocalRandom.current().nextInt(Constant.MAX_VALUE_COLOR)
         );
     }
 

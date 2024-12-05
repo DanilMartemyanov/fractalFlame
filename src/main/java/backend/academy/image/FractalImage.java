@@ -1,6 +1,6 @@
 package backend.academy.image;
 
-import backend.academy.Pixel;
+import backend.academy.models.Pixel;
 
 public record FractalImage(Pixel[] data, int width, int height) {
 

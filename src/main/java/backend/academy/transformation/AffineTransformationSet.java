@@ -1,15 +1,20 @@
 package backend.academy.transformation;
 
+
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import java.util.ArrayList;
 import java.util.List;
 
+@SuppressFBWarnings("PCOA_PARTIALLY_CONSTRUCTED_OBJECT_ACCESS")
 public class AffineTransformationSet {
-    private List<AffineTransformation> transformation;
+    private List<AffineTransformation> transformation = new ArrayList<>();
+    private CoefficientGenerator coefficientGenerator;
     private int count;
-    private CoefficientGenerator coefficientGenerator = new CoefficientGeneratorImpl();
 
-    public AffineTransformationSet(List<AffineTransformation> transformation, int count) {
-        this.transformation = transformation;
-        generateEq(count);
+    public AffineTransformationSet(int count) {
+        this.count = count;
+        this.coefficientGenerator = new CoefficientGeneratorImpl();
+        generateEq(this.count);
     }
 
     public void generateEq(int count) {

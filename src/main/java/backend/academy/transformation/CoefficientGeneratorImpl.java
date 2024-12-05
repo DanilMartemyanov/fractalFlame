@@ -1,8 +1,10 @@
 package backend.academy.transformation;
 
 import backend.academy.services.Constant;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.concurrent.ThreadLocalRandom;
 
+@SuppressFBWarnings("PREDICTABLE_RANDOM")
 public class CoefficientGeneratorImpl implements CoefficientGenerator {
 
     public static double randomCoefficient(double min, double max) {

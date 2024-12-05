@@ -1,8 +1,10 @@
-package backend.academy;
+package backend.academy.models;
 
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.concurrent.ThreadLocalRandom;
 
+@SuppressFBWarnings("PREDICTABLE_RANDOM")
 public record Rect(double x, double y, double width, double height) {
 
 

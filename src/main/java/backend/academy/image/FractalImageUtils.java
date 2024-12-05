@@ -1,7 +1,7 @@
 package backend.academy.image;
 
-import backend.academy.Point;
-import backend.academy.Rect;
+import backend.academy.models.Point;
+import backend.academy.models.Rect;
 
 public record FractalImageUtils(int xRes, int yRes, int eqCount, int iterations, int saturations) {
 

@@ -1,6 +1,6 @@
 package backend.academy.transformation;
 
-import backend.academy.Point;
+import backend.academy.models.Point;
 
 public class Sinusoidal implements Transformation {
     @Override

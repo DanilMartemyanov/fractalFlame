@@ -15,6 +15,7 @@ import java.util.List;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
+@SuppressWarnings("checkstyle:MagicNumber")
 public class Main {
     private final PrintStream printStream = new PrintStream(System.out, true, StandardCharsets.UTF_8);
 
@@ -43,19 +44,17 @@ public class Main {
         double startTimeOneThread = System.currentTimeMillis();
         FractalImage oneThreadImage = oneThreadRender.render();
         double endTimeOneThread = System.currentTimeMillis();
-        timeWorkOneThread = (endTimeOneThread - startTimeOneThread)/1000;
+        timeWorkOneThread = (endTimeOneThread - startTimeOneThread) / 1000;
 
         double startTimeMultiThread = System.currentTimeMillis();
         FractalImage multiThreadImage = multiThreadRender.render();
         double endTimeMultiThread = System.currentTimeMillis();
 
-        timeWorkMultiThread = (endTimeMultiThread - startTimeMultiThread)/1000;
-
+        timeWorkMultiThread = (endTimeMultiThread - startTimeMultiThread) / 1000;
 
         //гамма коррекция
         gammaCorrectionOneThread.process(oneThreadImage);
         gammaCorrectionMultiThreads.process(multiThreadImage);
-
 
         FileManager.save(oneThreadImage, "oneThreadImage." + fileFormat);
         FileManager.save(multiThreadImage, "multiThreadImage." + fileFormat);
@@ -68,9 +67,6 @@ public class Main {
 
         printStream.println("Время работы многопоточного режима: ");
         printStream.println(timeWorkMultiThread + " c");
-
-
-
 
     }
 }

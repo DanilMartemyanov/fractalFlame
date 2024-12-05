@@ -1,6 +1,6 @@
 package backend.academy.render;
 
-import backend.academy.Rect;
+import backend.academy.models.Rect;
 import backend.academy.image.FractalImage;
 import backend.academy.image.FractalImageUtils;
 import backend.academy.transformation.Transformation;

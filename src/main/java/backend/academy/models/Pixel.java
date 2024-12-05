@@ -1,4 +1,4 @@
-package backend.academy;
+package backend.academy.models;
 
 import java.awt.Color;
 import lombok.AllArgsConstructor;
