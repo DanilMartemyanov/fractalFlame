@@ -1,7 +1,5 @@
 package backend.academy.transformation;
 
-
-
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -21,11 +19,6 @@ public class NonLinearTransformationSet {
             sinusoidal,
             spherical
         );
-    }
-
-
-    public void addTransformation(Transformation transformation) {
-        transformations.add(transformation);
     }
 
     public Transformation getRandomTransformation() {

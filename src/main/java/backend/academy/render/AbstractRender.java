@@ -10,24 +10,24 @@ import backend.academy.services.RectUtils;
 import backend.academy.transformation.AffineTransformation;
 import backend.academy.transformation.AffineTransformationSet;
 import backend.academy.transformation.Transformation;
-import lombok.Getter;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.atomic.AtomicInteger;
+import lombok.Getter;
 
 @Getter
 public abstract class AbstractRender {
     private List<Transformation> transformations;
     protected FractalImageUtils config;
     private final ConcurrentHashMap<Pixel, Boolean> lockMap = new ConcurrentHashMap<>();
+    protected int saturation;
 
-    public AbstractRender(List<Transformation> transformations, FractalImageUtils config) {
+    public AbstractRender(List<Transformation> transformations, FractalImageUtils config, int saturation) {
         this.transformations = transformations;
         this.config = config;
-
+        this.saturation = saturation;
     }
 
     public FractalImage render(int width, int height) {
@@ -40,7 +40,6 @@ public abstract class AbstractRender {
     public abstract void renderAllImage(FractalImage fractalImage, Rect viewport);
 
     protected void renderImage(FractalImage fractalImage, Rect viewport) {
-        System.out.println("Поток пошел");
         int i = ThreadLocalRandom.current().nextInt(transformations.size());
         AffineTransformationSet affineTransformationSet =
             new AffineTransformationSet(new ArrayList<>(), config.eqCount());
@@ -61,8 +60,8 @@ public abstract class AbstractRender {
             point = nonlinearTransformation.apply(point);
 
             // Проверяем, попадает ли точка в область просмотра и начинается ли отрисовка
-            if (step >= 0 && Checker.boundCheck(point.x(), viewport.x(), viewport.x() + viewport.width())
-                && Checker.boundCheck(point.y(), viewport.y(), viewport.y() + viewport.height())) {
+            if (step >= 0 && Checker.checkBound(point.x(), viewport.x(), viewport.x() + viewport.width())
+                && Checker.checkBound(point.y(), viewport.y(), viewport.y() + viewport.height())) {
                 // Преобразуем координаты точки в пиксельные координаты изображения
 
                 point = config.convertCoordinatePixelImage(viewport, point);

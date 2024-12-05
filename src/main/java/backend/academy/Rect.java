@@ -1,6 +1,6 @@
 package backend.academy;
 
-import java.security.SecureRandom;
+
 import java.util.concurrent.ThreadLocalRandom;
 
 public record Rect(double x, double y, double width, double height) {

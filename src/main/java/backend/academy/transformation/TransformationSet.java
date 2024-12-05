@@ -1,11 +1,8 @@
 package backend.academy.transformation;
 
-import lombok.Getter;
-import java.security.SecureRandom;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import lombok.Getter;
 
 @Getter
 public class TransformationSet {
@@ -27,7 +24,6 @@ public class TransformationSet {
             handkerchief
         );
     }
-
 
     public void addTransformation(Transformation transformation) {
         transformations.add(transformation);

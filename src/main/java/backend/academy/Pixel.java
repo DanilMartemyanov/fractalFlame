@@ -1,9 +1,9 @@
 package backend.academy;
 
+import java.awt.Color;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import java.awt.Color;
 
 @Getter
 @Setter
@@ -44,8 +44,7 @@ public class Pixel {
 
     @Override
     public String toString() {
-        return "Pixel: " + "red: " + red + ", green: " + green + ", b: " + blue + ", hitCount: " + hitCount +
-            ", normal: " +
-            normal;
+        return "Pixel: " + "red: " + red + ", green: " + green + ", b: " + blue + ", hitCount: " + hitCount
+            + ", normal: " + normal;
     }
 }

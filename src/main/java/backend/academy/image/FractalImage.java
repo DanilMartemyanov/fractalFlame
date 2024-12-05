@@ -1,8 +1,6 @@
 package backend.academy.image;
 
 import backend.academy.Pixel;
-import java.util.ArrayList;
-import java.util.List;
 
 public record FractalImage(Pixel[] data, int width, int height) {
 
@@ -19,7 +17,7 @@ public record FractalImage(Pixel[] data, int width, int height) {
     }
 
     public Pixel getPixel(int x, int y) {
-        if(contains(x, y)) {
+        if (contains(x, y)) {
             return data[y * width + x];
         }
         return null;

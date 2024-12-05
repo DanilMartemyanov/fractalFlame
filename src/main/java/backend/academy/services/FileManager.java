@@ -2,27 +2,26 @@ package backend.academy.services;
 
 import backend.academy.Pixel;
 import backend.academy.image.FractalImage;
-import javax.imageio.ImageIO;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import javax.imageio.ImageIO;
+import lombok.extern.log4j.Log4j2;
 
-public class FileManager {
-    public static void saveFractalImageAsJPEG(FractalImage fractalImage, String filePath) throws IOException {
+@Log4j2
+public class FileManager implements SaverFile {
+    public static BufferedImage getBufferedFractalImage(FractalImage fractalImage) throws IOException {
         int width = fractalImage.width();
         int height = fractalImage.height();
 
         Pixel[] pixels = fractalImage.data();
 
-
         BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-
 
         for (int i = 0; i < pixels.length; i++) {
             int x = i % width;
             int y = i / width;
-
 
             Pixel pixel = pixels[i];
             Color color = new Color(pixel.red(), pixel.green(), pixel.blue());
@@ -30,8 +29,31 @@ public class FileManager {
             bufferedImage.setRGB(x, y, color.getRGB());
         }
 
-        File outputFile = new File(filePath);
-        ImageIO.write(bufferedImage, "JPEG", outputFile);
-        System.out.println("Image saved as: " + filePath);
+        return bufferedImage;
+
+    }
+
+    public void save(FractalImage image, String filePath) {
+        try {
+            BufferedImage bufferedImage = getBufferedFractalImage(image);
+            File outputFile = new File(filePath);
+            String fileExtension = getFileExtension(filePath);
+            ImageIO.write(bufferedImage, fileExtension, outputFile);
+            log.info("Image saved as: " + filePath);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static String getFileExtension(String filePath) {
+        String fileName = new File(filePath).getName();
+
+        int indexOfLastDot = fileName.lastIndexOf('.');
+
+        if (indexOfLastDot > 0 && indexOfLastDot < fileName.length() - 1) {
+            return fileName.substring(indexOfLastDot + 1);
+        }
+
+        return "";
     }
 }

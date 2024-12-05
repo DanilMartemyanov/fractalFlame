@@ -1,9 +1,6 @@
 package backend.academy.transformation;
 
-
 import backend.academy.Point;
-
-
 
 public class Spherical implements Transformation {
     @Override

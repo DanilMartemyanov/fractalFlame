@@ -1,11 +1,11 @@
 package backend.academy.transformation;
 
 import backend.academy.Point;
-import lombok.Getter;
-
+import backend.academy.services.Constant;
 import java.awt.Color;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
+import lombok.Getter;
 
 @Getter
 public class AffineTransformation {
@@ -22,9 +22,9 @@ public class AffineTransformation {
             "f", f
         );
         this.color = new Color(
-            ThreadLocalRandom.current().nextInt(255),
-            ThreadLocalRandom.current().nextInt(255),
-            ThreadLocalRandom.current().nextInt(255)
+            ThreadLocalRandom.current().nextInt(Constant.MAXVALUECOLOR),
+            ThreadLocalRandom.current().nextInt(Constant.MAXVALUECOLOR),
+            ThreadLocalRandom.current().nextInt(Constant.MAXVALUECOLOR)
         );
     }
 
