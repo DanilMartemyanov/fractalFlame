@@ -9,17 +9,18 @@ import backend.academy.render.OneThreadRender;
 import backend.academy.services.FileManager;
 import backend.academy.transformation.Transformation;
 import backend.academy.transformation.TransformationSet;
+import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class Main {
+    private final PrintStream printStream = new PrintStream(System.out, true, StandardCharsets.UTF_8);
 
     public static void main(String[] args) {
-        float startTimeOneThread = System.currentTimeMillis();
-        float endTimeOneThread = System.currentTimeMillis();
-        float startTimeMultiThread = System.currentTimeMillis();
-        float endTimeMultiThread = System.currentTimeMillis();
+        double timeWorkOneThread;
+        double timeWorkMultiThread;
         TransformationSet transformationSet = new TransformationSet();
         CommandLineArgs commandLineArgs = CommandLineArgs.parseArguments(args);
         GammaCorrection gammaCorrectionOneThread = new GammaCorrection();
@@ -37,9 +38,20 @@ public class Main {
         // Создание однопоточого и многопоточного режима
         OneThreadRender oneThreadRender = new OneThreadRender(transformations, config);
         MultiThreadRender multiThreadRender = new MultiThreadRender(transformations, config);
-        //
+        //Замер времени
+
+        double startTimeOneThread = System.currentTimeMillis();
         FractalImage oneThreadImage = oneThreadRender.render();
+        double endTimeOneThread = System.currentTimeMillis();
+        timeWorkOneThread = (endTimeOneThread - startTimeOneThread)/1000;
+
+        double startTimeMultiThread = System.currentTimeMillis();
         FractalImage multiThreadImage = multiThreadRender.render();
+        double endTimeMultiThread = System.currentTimeMillis();
+
+        timeWorkMultiThread = (endTimeMultiThread - startTimeMultiThread)/1000;
+
+
         //гамма коррекция
         gammaCorrectionOneThread.process(oneThreadImage);
         gammaCorrectionMultiThreads.process(multiThreadImage);
@@ -47,6 +59,16 @@ public class Main {
 
         FileManager.save(oneThreadImage, "oneThreadImage." + fileFormat);
         FileManager.save(multiThreadImage, "multiThreadImage." + fileFormat);
+
+        printStream.println("Конфигурация системы:");
+        printStream.println(config);
+
+        printStream.println("Время работы однопоточного режима: ");
+        printStream.println(timeWorkOneThread + " c");
+
+        printStream.println("Время работы многопоточного режима: ");
+        printStream.println(timeWorkMultiThread + " c");
+
 
 
 

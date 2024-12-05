@@ -1,13 +1,11 @@
 package backend.academy.image;
 
-
 import backend.academy.Point;
 import backend.academy.Rect;
 
-
 public record FractalImageUtils(int xRes, int yRes, int eqCount, int iterations, int saturations) {
 
-    public  Point convertCoordinatePixelImage(Rect viewport, Point point) {
+    public Point convertCoordinatePixelImage(Rect viewport, Point point) {
 
         double xmax = viewport.x() + viewport.width();
         double ymax = viewport.y() + viewport.height();
@@ -20,6 +18,9 @@ public record FractalImageUtils(int xRes, int yRes, int eqCount, int iterations,
         return new Point(x1, y1);
     }
 
-
-
+    @Override
+    public String toString() {
+        return "width: " + xRes + " height: " + yRes + " iterations: " + iterations + " saturations: " + saturations
+            + " eqCount: " + eqCount;
+    }
 }
