@@ -14,10 +14,9 @@ public class MultiThreadRender extends AbstractRender {
 
     public MultiThreadRender(
         List<Transformation> transformations,
-        FractalImageUtils config,
-        int saturation
+        FractalImageUtils config
     ) {
-        super(transformations, config, saturation);
+        super(transformations, config);
     }
 
     @SneakyThrows
@@ -25,7 +24,7 @@ public class MultiThreadRender extends AbstractRender {
     public void renderAllImage(FractalImage fractalImage, Rect viewport) {
         ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
-        for (int i = 0; i < saturation; i++) {
+        for (int i = 0; i < config.saturations(); i++) {
             executorService.execute(() -> renderImage(fractalImage, viewport));
         }
 

@@ -6,9 +6,11 @@ import backend.academy.image.GammaCorrection;
 import backend.academy.render.MultiThreadRender;
 import backend.academy.render.OneThreadRender;
 import backend.academy.services.FileManager;
+import backend.academy.transformation.Bent;
 import backend.academy.transformation.Disk;
 import backend.academy.transformation.Handkerchief;
 import backend.academy.transformation.Heart;
+import backend.academy.transformation.Polar;
 import backend.academy.transformation.Sinusoidal;
 import backend.academy.transformation.Spherical;
 import backend.academy.transformation.TransformationSet;
@@ -22,8 +24,8 @@ public class Main {
         int width = 1920;
         int height = 1080;
         int eqCount = 3;
-        int iterations = 10_000_000;
-        FractalImageUtils parameters = new FractalImageUtils(width, height, eqCount, iterations);
+        int iterations = 1_000_000;
+        FractalImageUtils parameters = new FractalImageUtils(width, height, eqCount, iterations, 100);
         Handkerchief handkerchief = new Handkerchief();
 
         GammaCorrection gammaCorrection = new GammaCorrection();
@@ -31,9 +33,11 @@ public class Main {
         Disk disk = new Disk();
         Spherical spherical = new Spherical();
         Sinusoidal sinusoidal = new Sinusoidal();
-        OneThreadRender render = new OneThreadRender(List.of(handkerchief), parameters, 0);
+        Polar polar = new Polar();
+        OneThreadRender render = new OneThreadRender(List.of(handkerchief), parameters);
         TransformationSet transformationSet = new TransformationSet();
-        MultiThreadRender multiThreadRender = new MultiThreadRender(List.of(handkerchief, sinusoidal ), parameters, 3);
+        Bent bent = new Bent();
+        MultiThreadRender multiThreadRender = new MultiThreadRender(List.of(heart), parameters);
         long startTime = System.currentTimeMillis();
         FractalImage image = multiThreadRender.render(1920, 1080);
         long endTime = System.currentTimeMillis();

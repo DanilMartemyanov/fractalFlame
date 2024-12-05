@@ -5,7 +5,7 @@ import backend.academy.Point;
 import backend.academy.Rect;
 
 
-public record FractalImageUtils(int xRes, int yRes, int eqCount, int iterations) {
+public record FractalImageUtils(int xRes, int yRes, int eqCount, int iterations, int saturations) {
 
     public  Point convertCoordinatePixelImage(Rect viewport, Point point) {
 

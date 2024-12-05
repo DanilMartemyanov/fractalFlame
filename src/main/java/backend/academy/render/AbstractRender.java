@@ -22,12 +22,11 @@ public abstract class AbstractRender {
     private List<Transformation> transformations;
     protected FractalImageUtils config;
     private final ConcurrentHashMap<Pixel, Boolean> lockMap = new ConcurrentHashMap<>();
-    protected int saturation;
 
-    public AbstractRender(List<Transformation> transformations, FractalImageUtils config, int saturation) {
+
+    public AbstractRender(List<Transformation> transformations, FractalImageUtils config) {
         this.transformations = transformations;
         this.config = config;
-        this.saturation = saturation;
     }
 
     public FractalImage render(int width, int height) {
@@ -40,10 +39,11 @@ public abstract class AbstractRender {
     public abstract void renderAllImage(FractalImage fractalImage, Rect viewport);
 
     protected void renderImage(FractalImage fractalImage, Rect viewport) {
-        int i = ThreadLocalRandom.current().nextInt(transformations.size());
+
         AffineTransformationSet affineTransformationSet =
             new AffineTransformationSet(new ArrayList<>(), config.eqCount());
         for (int step = 0; step < config.iterations(); step++) {
+            int i = ThreadLocalRandom.current().nextInt(transformations.size());
             Point point = viewport.randomPoint();
 
             double newX = point.x();
