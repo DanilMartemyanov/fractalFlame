@@ -9,7 +9,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import lombok.SneakyThrows;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 public class MultiThreadRender extends AbstractRender {
 
     public MultiThreadRender(
@@ -23,7 +25,7 @@ public class MultiThreadRender extends AbstractRender {
     @Override
     public void renderAllImage(FractalImage fractalImage, Rect viewport) {
         ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-
+        log.info("Количество потоков: " +  Runtime.getRuntime().availableProcessors());
         for (int i = 0; i < config.saturations(); i++) {
             executorService.execute(() -> renderImage(fractalImage, viewport));
         }

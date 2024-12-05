@@ -29,8 +29,8 @@ public abstract class AbstractRender {
         this.config = config;
     }
 
-    public FractalImage render(int width, int height) {
-        FractalImage fractalImage = FractalImage.init(width, height);
+    public FractalImage render() {
+        FractalImage fractalImage = FractalImage.init(config.xRes(), config.yRes());
         Rect rect = RectUtils.create(config);
         renderAllImage(fractalImage, rect);
         return fractalImage;
@@ -74,6 +74,7 @@ public abstract class AbstractRender {
             }
 
         }
+
 
     }
 

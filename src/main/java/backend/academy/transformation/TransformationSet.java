@@ -1,12 +1,14 @@
 package backend.academy.transformation;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 import lombok.Getter;
 
 @Getter
 public class TransformationSet {
-    private final List<Transformation> transformations;
+    private final Map<String, Transformation> transformations;
     private Disk disk = new Disk();
     private Heart heart = new Heart();
     private Polar polar = new Polar();
@@ -15,22 +17,24 @@ public class TransformationSet {
     private Handkerchief handkerchief = new Handkerchief();
 
     public TransformationSet() {
-        this.transformations = List.of(
-            disk,
-            heart,
-            polar,
-            sinusoidal,
-            spherical,
-            handkerchief
+        this.transformations = Map.of(
+            "disk", disk,
+            "heart", heart,
+            "polar", polar,
+            "sinusoidal", sinusoidal,
+            "spherical", spherical,
+            "handkerchief", handkerchief
         );
     }
 
-    public void addTransformation(Transformation transformation) {
-        transformations.add(transformation);
+    public List<Transformation> getTransformations(List<String> transformationNames) {
+        List<Transformation> nonLinTransformations = new ArrayList<>();
+        for(String transformationName : transformationNames) {
+            if(this.transformations.containsKey(transformationName)) {
+                nonLinTransformations.add(transformations.get(transformationName));
+            }
+        }
+        return nonLinTransformations;
     }
 
-    public Transformation getRandomTransformation() {
-        int index = ThreadLocalRandom.current().nextInt(transformations.size());
-        return transformations.get(index);
-    }
 }

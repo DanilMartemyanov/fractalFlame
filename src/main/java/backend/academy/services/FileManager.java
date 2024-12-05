@@ -7,10 +7,12 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import lombok.experimental.UtilityClass;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
-public class FileManager implements SaverFile {
+@UtilityClass
+public class FileManager  {
     public static BufferedImage getBufferedFractalImage(FractalImage fractalImage) throws IOException {
         int width = fractalImage.width();
         int height = fractalImage.height();
@@ -33,7 +35,7 @@ public class FileManager implements SaverFile {
 
     }
 
-    public void save(FractalImage image, String filePath) {
+    public static void save(FractalImage image, String filePath) {
         try {
             BufferedImage bufferedImage = getBufferedFractalImage(image);
             File outputFile = new File(filePath);
