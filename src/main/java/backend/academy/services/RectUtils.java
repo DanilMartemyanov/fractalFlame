@@ -1,7 +1,8 @@
 package backend.academy.services;
 
-import backend.academy.models.Rect;
+
 import backend.academy.image.FractalImageUtils;
+import backend.academy.models.Rect;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass

@@ -1,8 +1,8 @@
 package backend.academy.render;
 
-import backend.academy.models.Rect;
 import backend.academy.image.FractalImage;
 import backend.academy.image.FractalImageUtils;
+import backend.academy.models.Rect;
 import backend.academy.transformation.Transformation;
 import java.util.List;
 

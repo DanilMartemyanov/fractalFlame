@@ -1,8 +1,7 @@
 package backend.academy.services;
 
-
-import backend.academy.models.Pixel;
 import backend.academy.image.FractalImage;
+import backend.academy.models.Pixel;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
